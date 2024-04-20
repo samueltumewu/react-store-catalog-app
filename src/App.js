@@ -48,7 +48,7 @@ function App() {
       </div>
   )
 
-  if(shoesPageResponseStatus!=-1) {
+  if(shoesPageResponseStatus!==-1) {
     return appPage;
   } else {
     return (
