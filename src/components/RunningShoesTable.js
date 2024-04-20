@@ -40,11 +40,7 @@ export const RunningShoesTables = ({shoesData, shoesDataHeaders, shoesPageRespon
     switch (shoesPageResponseStatus) {
       case 200:
         return shoesData.length > 1 ? defaultPage : notFoundTable
-      case 400:
-        return notFoundTable
-      case -1:
-        return <p>Loading...</p>
       default:
-        return <p>WHOAAA</p>
+        return notFoundTable
     }
 }
