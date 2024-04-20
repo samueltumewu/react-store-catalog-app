@@ -4,7 +4,6 @@ import './RunningShoesTable.css';
 
 export const RunningShoesTables = () => {
     const [shoesData, setShoesData] = useState([]);
-    const [isSuccessState, setIsSuccessState] = useState(false);
     const [responseHeaders, setResponseHeaders] = useState([]);
 
     useEffect(() => {
@@ -13,7 +12,6 @@ export const RunningShoesTables = () => {
             const response = await axios.get('https://store-catalog-app-1-0-0-snapshot.onrender.com/shoes?page=2');
             console.log(Object.keys(response.data))
             const API_RESPONSE_DATA = response.data;
-            setIsSuccessState(API_RESPONSE_DATA.success);
             if (API_RESPONSE_DATA.success) {
               setShoesData(API_RESPONSE_DATA.data);
               setResponseHeaders(Object.keys(API_RESPONSE_DATA.data[0]));
@@ -33,7 +31,6 @@ export const RunningShoesTables = () => {
     return (
         <>
             <h1>hello</h1>
-            <p>{responseHeaders.filter(e => Object.keys(e) != 'id')}</p>
             <div className="center-div">
             <table>
               <thead>
