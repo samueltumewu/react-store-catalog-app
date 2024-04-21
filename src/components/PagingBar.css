@@ -1,0 +1,19 @@
+.paging-bar-parent {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+.paging-bar-child {
+    /* margin-top: auto;
+    margin-bottom: auto;
+    padding: auto; */
+}
+#paging-bar-label {
+    margin-top: -5px;
+}
+#paging-bar-buttons {
+    margin-top: -5px;
+}
+button {
+    margin-right: 10px;
+}

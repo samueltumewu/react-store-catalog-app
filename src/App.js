@@ -9,6 +9,8 @@ function App() {
   const [shoesPageResponseStatus, setShoesPageResponseStatus] = useState(-1);
   const [apiResponseError, setApiResponseError] = useState('');
 
+  const [pageNumber, setPageNumber] = useState(0);
+
   const resetAllStates = () => {
     setShoesData([]);
     setShoesDataHeaders([]);
@@ -19,7 +21,8 @@ function App() {
   useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get('https://store-catalog-app-1-0-0-snapshot.onrender.com/shoes?page=2');
+          let urlGet = `http://localhost:8080/shoes?page=${pageNumber}`
+          const response = await axios.get(urlGet);
           console.log('response entries: ' )
           console.log(Object.entries(response))
           const API_RESPONSE_DATA = response.data;
@@ -35,7 +38,28 @@ function App() {
       };
       fetchData();
       return resetAllStates()
-    },[])
+    },[pageNumber])
+
+  const paginationButtonHandler = (action) => {
+    switch (action) {
+      case 'next':
+        setPageNumber(prev => prev+1);
+        break;
+      case 'back':
+        if(pageNumber>0) {
+          setPageNumber(prev => prev-1);
+        }
+        break;
+      case 'first':
+        setPageNumber(0);
+        break;
+      case 'last':
+        alert('on development')
+        break;
+      default:
+        setPageNumber(prev => prev);
+    }
+  }
 
   let appPage = (
       <div className="App">
@@ -43,7 +67,9 @@ function App() {
               <RunningShoesTables 
                 shoesData={shoesData} 
                 shoesDataHeaders={shoesDataHeaders} 
-                shoesPageResponseStatus={shoesPageResponseStatus}/>
+                shoesPageResponseStatus={shoesPageResponseStatus}
+                paginationButtonHandler={paginationButtonHandler}
+                pageNumber={pageNumber}/>
             </div>
       </div>
   )
