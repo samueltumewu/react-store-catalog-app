@@ -3,4 +3,4 @@
 
 This site is serving as the *Frontend*. \
 \
-You may check the **REST API** *Backend* repository [here](https://github.com/samueltumewu/quarkus-store-catalog-app) which builds on **Quarkus Java**
+You may check the **REST API** *Backend* repository [here](https://github.com/samueltumewu/quarkus-store-catalog-app) which runs upon **Java** with **Quarkus** framework
