@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
       const fetchData = async () => {
         try {
-          let urlGet = `http://localhost:8080/shoes?page=${pageNumber}`
+          let urlGet = `https://store-catalog-app-1-0-0-snapshot.onrender.com/shoes?page=${pageNumber}`
           const response = await axios.get(urlGet);
           console.log('response entries: ' )
           console.log(Object.entries(response))
