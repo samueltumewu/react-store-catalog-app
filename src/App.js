@@ -9,7 +9,10 @@ function App() {
   const [shoesPageResponseStatus, setShoesPageResponseStatus] = useState(-1);
   const [apiResponseError, setApiResponseError] = useState('');
 
+  // pagination
   const [pageNumber, setPageNumber] = useState(0);
+  const [perPage, setPerPage] = useState(10);
+  const [countPagination, setCountPagination] = useState(0);
 
   const resetAllStates = () => {
     setShoesData([]);
@@ -21,15 +24,14 @@ function App() {
   useEffect(() => {
       const fetchData = async () => {
         try {
-          let urlGet = `https://store-catalog-app-1-0-0-snapshot.onrender.com/shoes?page=${pageNumber}`
+          let urlGet = `https://store-catalog-app-1-0-0-snapshot.onrender.com/shoes?page=${pageNumber}&per_page=${perPage}`
           const response = await axios.get(urlGet);
-          console.log('response entries: ' )
-          console.log(Object.entries(response))
           const API_RESPONSE_DATA = response.data;
           setShoesPageResponseStatus(response.status)
           if (API_RESPONSE_DATA.success) {
             setShoesData(API_RESPONSE_DATA.data);
             setShoesDataHeaders(Object.keys(API_RESPONSE_DATA.data[0]));
+            setCountPagination(API_RESPONSE_DATA.count);
           } 
         } catch (error) {
           console.error('Error fetching data:', error.message);
@@ -38,28 +40,7 @@ function App() {
       };
       fetchData();
       return resetAllStates()
-    },[pageNumber])
-
-  const paginationButtonHandler = (action) => {
-    switch (action) {
-      case 'next':
-        setPageNumber(prev => prev+1);
-        break;
-      case 'back':
-        if(pageNumber>0) {
-          setPageNumber(prev => prev-1);
-        }
-        break;
-      case 'first':
-        setPageNumber(0);
-        break;
-      case 'last':
-        alert('on development')
-        break;
-      default:
-        setPageNumber(prev => prev);
-    }
-  }
+    },[pageNumber, perPage])
 
   let appPage = (
       <div className="App">
@@ -68,8 +49,11 @@ function App() {
                 shoesData={shoesData} 
                 shoesDataHeaders={shoesDataHeaders} 
                 shoesPageResponseStatus={shoesPageResponseStatus}
-                paginationButtonHandler={paginationButtonHandler}
-                pageNumber={pageNumber}/>
+                pageNumber={pageNumber}
+                setPageNumber={setPageNumber}
+                perPage={perPage}
+                setPerPage={setPerPage}
+                countPagination={countPagination}/>
             </div>
       </div>
   )
