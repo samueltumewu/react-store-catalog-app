@@ -8,8 +8,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import TablePagination from '@mui/material/TablePagination';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import './RunningShoesTable.css';
+import { IconButton, Chip } from '@mui/material';
 
 export const RunningShoesTables = ({
   shoesData, 
@@ -19,7 +22,8 @@ export const RunningShoesTables = ({
   setPageNumber,
   perPage,
   setPerPage,
-  countPagination
+  countPagination,
+  modifyQuantity
 }) => {
     // PAGING
     const handleChangePage = (event, newPage) => {
@@ -47,7 +51,7 @@ export const RunningShoesTables = ({
                     fontWeight: 'bold'
                   }}
                 >
-                  {header}
+                  {header.toUpperCase()}
                 </TableCell>
               )}
             </TableRow>
@@ -55,12 +59,37 @@ export const RunningShoesTables = ({
           <TableBody>
             {
               shoesData.map((currData, index) => (
-                <TableRow key={currData.id} sx={{'&:nth-of-type(even)': {backgroundColor: '#b8d6c9'}}}
-                >
+                <TableRow key={currData.id} sx={{'&:nth-of-type(even)': {backgroundColor: '#b8d6c9'}}}>
                   {
-                    Object.values(currData).map((cell) => 
-                      <TableCell>{cell}</TableCell>
-                    )
+                    // Object.values(currData).map((cell, indexCell) => 
+                    //   <TableCell key={`${currData.id}${index}${indexCell}`}>{cell}</TableCell>
+                    // )
+                    Object.entries(currData).map(([key, value]) => {
+                      return (key.toLowerCase() !== 'quantity') ?
+                        <TableCell key={`${currData.id}${index}${key}`}>{value}</TableCell>
+                        : <TableCell key={`${currData.id}${index}${key}`}>
+                                <IconButton 
+                                  key="decrement" 
+                                  value="decrement" 
+                                  variant='filled'
+                                  onClick={(e)=>(modifyQuantity(e.currentTarget.value, currData))}>
+                                    <RemoveIcon fontSize="small" color="primary"/>
+                                </IconButton>
+                                    <Chip 
+                                      label={value}
+                                      variant="filled" 
+                                      color="success" 
+                                      size="small" 
+                                      sx={{width:45}}/>
+                                <IconButton 
+                                  key="increment" 
+                                  value="increment" 
+                                  variant='filled'
+                                  onClick={(e)=>(modifyQuantity(e.currentTarget.value, currData))}>
+                                    <AddIcon fontSize="small" color="primary"/>
+                                </IconButton>
+                          </TableCell>
+                    })
                   }
                 </TableRow>
               ))
