@@ -16,23 +16,28 @@ function App() {
   const [countPagination, setCountPagination] = useState(0);
 
   // HTTP Handling
-  const fetchData = async () => {
-    try {
-      let urlGet = `${BASE_URL}/shoes?page=${pageNumber}&per_page=${perPage}`
-      const response = await axios.get(urlGet);
-      const API_RESPONSE_DATA = response.data;
-      setShoesPageResponseStatus(response.status)
-      if (API_RESPONSE_DATA.success) {
-        setShoesData(API_RESPONSE_DATA.data);
-        setShoesDataHeaders(Object.keys(API_RESPONSE_DATA.data[0]));
-        setCountPagination(API_RESPONSE_DATA.count);
-      } 
-      console.log(JSON.stringify(shoesData, null, 4))
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-      setApiResponseError(error.message);
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let urlGet = `${BASE_URL}/shoes?page=${pageNumber}&per_page=${perPage}`
+        const response = await axios.get(urlGet);
+        const API_RESPONSE_DATA = response.data;
+        setShoesPageResponseStatus(response.status)
+        if (API_RESPONSE_DATA.success) {
+          setShoesData(API_RESPONSE_DATA.data);
+          setShoesDataHeaders(Object.keys(API_RESPONSE_DATA.data[0]));
+          setCountPagination(API_RESPONSE_DATA.count);
+        } 
+        // console.log(JSON.stringify(shoesData, null, 4))
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+        setApiResponseError(error.message);
+      }
+    };
+    fetchData();
+    return resetAllStates()
+  },[pageNumber, perPage])
+  
 
   const putQuantity = async (content, quantity) => {
     let isSuccess = false;
@@ -97,11 +102,6 @@ function App() {
         break;
     }
   }
-
-  useEffect(() => {
-      fetchData();
-      return resetAllStates()
-    },[pageNumber, perPage])
 
   let appPage = (
       <div className="App">
